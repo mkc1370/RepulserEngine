@@ -16,6 +16,7 @@ namespace ProjectBlue.RepulserEngine.Repository
 
         private Subject<TimecodeData> onTimecodeUpdatedSubject = new Subject<TimecodeData>();
         public IObservable<TimecodeData> OnTimecodeUpdatedAsObservable => onTimecodeUpdatedSubject;
+        public TimecodeData CurrentTimecode => currentTimecode;
 
         private int counter = 0;
 

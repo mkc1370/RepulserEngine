@@ -10,12 +10,13 @@ namespace ProjectBlue.RepulserEngine.Domain.UseCase
     public class SendToEndpointUseCase : IDisposable, ISendToEndpointUseCase
     {
         private CompositeDisposable _disposable = new CompositeDisposable();
-
         private ISenderRepository senderRepository;
+        private ITimecodeDecoderRepository timecodeSettingRepository;
 
-        public SendToEndpointUseCase(ISenderRepository senderRepository)
+        public SendToEndpointUseCase(ISenderRepository senderRepository, ITimecodeDecoderRepository timecodeSettingRepository)
         {
             this.senderRepository = senderRepository;
+            this.timecodeSettingRepository = timecodeSettingRepository;
         }
 
         public void Send(IPEndPoint endPoint, string commandName, string commandArgument, CommandType commandType)
@@ -34,6 +35,13 @@ namespace ProjectBlue.RepulserEngine.Domain.UseCase
             if (string.IsNullOrEmpty(commandArgument))
             {
                 senderRepository.Send(endPoint, commandName, "null");
+                return;
+            }
+
+            if (commandArgument == "{TIMECODE}")
+            {
+                var timecode = timecodeSettingRepository.CurrentTimecode;
+                senderRepository.Send(endPoint, commandName, timecode.ToString());
                 return;
             }
 

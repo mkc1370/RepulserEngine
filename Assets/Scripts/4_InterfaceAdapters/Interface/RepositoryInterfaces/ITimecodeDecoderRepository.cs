@@ -6,5 +6,6 @@ namespace ProjectBlue.RepulserEngine.Repository
     public interface ITimecodeDecoderRepository
     {
         IObservable<TimecodeData> OnTimecodeUpdatedAsObservable { get; }
+        TimecodeData CurrentTimecode { get; }
     }
 }
